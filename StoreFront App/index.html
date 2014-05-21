@@ -13,15 +13,15 @@
                 <form role="form">
                     <h1>Log In</h1>
                     <div class="form-group">
-                        <label for="userNameLogInInput">User Name</label>
-                        <input type="text" class="form-control" id="newItemName">
+                        <label for="userNameLogIn">User Name</label>
+                        <input type="text" class="form-control" id="userNameLogInInput">
                     </div>
                     <div class="form-group">
-                        <label for="userPasswordLogInInput">Password</label>
-                        <input type="text" class="form-control" id="newItemPrice">
+                        <label for="userPasswordLogIn">Password</label>
+                        <input type="text" class="form-control" id="userPasswordLogInInput">
                     </div>
                     <div class="checkbox">
-                    </div> <button type="submit" class="btn btn-default" id="logInButton">Log in</button>
+                    </div> <button type="submit" class="btn btn-default" id="logInButton" onclick="logUserIn();">Log in</button>
                 </form>
             </div>
             <div class="row clearfix">
@@ -29,18 +29,19 @@
                     <form role="form">
                         <h1>Sign Up</h1>
                         <div class="form-group">
-                            <label for="userNameSignUpInput">User Name</label>
-                            <input type="text" class="form-control" id="newItemName">
+                            <label for="userNameSignUp">User Name</label>
+                            <input type="text" class="form-control" id="userNameSignUpInput">
                         </div>
                         <div class="form-group">
                             <label for="userPasswordSignUpInput">Password</label>
-                            <input type="text" class="form-control" id="newItemPrice">
+                            <input type="text" class="form-control" id="userPasswordSignUpInput">
                         </div>
                         <div class="checkbox">
-                        </div> <button type="submit" class="btn btn-default" id="logInButton">Sign Up!</button>
+                        </div> <button type="submit" class="btn btn-default" id="logInButton" onclick="signUserUp();">Sign Up!</button>
                     </form>
                 </div>
             </div>
+        </div>
     </div>
 
     <div class="container" id="homePage">

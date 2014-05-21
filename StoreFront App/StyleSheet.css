@@ -2,9 +2,10 @@
 
 }
 
-#homePage {
+.hide {
     display: none;
 }
+
 
 .top-buffer {
     margin-top: 100px;
@@ -17,9 +18,8 @@
 .outline {
     /*outline: 1px solid black;*/
     margin-top: 10px;
-    background-color: #7FFF99;
+    /*background-color: #7FFF99;*/
     border-radius: 10px;
-
 }
 
 #signUpForm {

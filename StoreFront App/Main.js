@@ -125,23 +125,16 @@ Table of Contents:
 */
 
 /* 
-    Users
-        1. I'll need to set the homepage html to display: none in order to only reveal the user info
-        2. Create html for user log in and sign up
-            Functionality it will require
-                -userconstructor function
-                -takeToHomepage function
-        3. Add newly created users to firebase
-            a. This means I'll have to refactor my functions to sort through firebase's data. I can do this by adding a "type" property to all my data objects.
-            b. Ideally I'll refactor the ajax calls to take the parameters they need instead of writing more ajax calls.
-        4. Store current user on session storage. This means I'll have to filter through any data I'm grabbing from session storage.
+
 
 */
 
 
 //Globals
+var users = [];
 var allItems = [];
 var cartItems = [];
+var currentUser;
 
 //==================================================AJAX Calls===================================================================//
 var postItems = function () {
@@ -200,6 +193,55 @@ var scheduleNextUpdate = function () {
     setTimeout(scheduleNextUpdate, 6000)
 };
 scheduleNextUpdate();
+//====================================================Users====================================================================//
+
+/*
+Users
+1. I'll need to set the homepage html to display: none in order to only reveal the user info
+2. Create html for user log in and sign up
+    Functionality it will require
+        -userconstructor function
+        -logUserIn function
+3. Add newly created users to firebase
+    a. This means I'll have to refactor my functions to sort through firebase's data. I can do this by adding a "type" property to all my data objects.
+    b. Ideally I'll refactor the ajax calls to take the parameters they need instead of writing more ajax calls.
+4. Store current user on session storage. This means I'll have to filter through any data I'm grabbing from session storage.
+*/
+
+var logUserIn = function () {
+    var userNameAttempt = document.getElementById("userNameLogInInput").value;
+    var passWordAttempt = document.getElementById("userPasswordLogInInput").value;
+    for (var propName in localStorage) {
+        propName = JSON.parse(localStorage[propName])
+        if (propName["type"] === "user") {
+            if (propName["name"] === userNameAttempt && propName["password"] === passWordAttempt) {
+                currentUser = propName;
+                sessionStorage[sessionStorage.length] = propName;
+            }
+        }
+    }
+    $("#homePage").removeClass("hide");
+    $("#logInPage").addClass("hide");
+};
+
+var signUserUp = function () {
+    var newUserName = document.getElementById("userNameSignUpInput").value;
+    var newUserPassword = document.getElementById("userPasswordSignUpInput").value;
+    var newUserToSignUp = new UserConstructor(newUserName, newUserPassword);
+    sessionStorage[0] = JSON.stringify(newUserToSignUp);
+    //postItems();
+};
+
+var UserConstructor = function (name, password) {
+    this.name = name;
+    this.password = password;
+    this.type = "user"
+};
+
+$("#logInButton").on("click", function (e) {
+    e.preventDefault();
+    //addItem();
+});
 
 //====================================================Adding Items==============================================================//
 $("#addItemButton").on("click", function (e) {
@@ -211,8 +253,9 @@ var ItemConstructor = function (name, price, description, image, rating) {
     this.name = name;
     this.price = price;
     this.image = image;
+    this.type = "item"
 };
-ItemConstructor["prototype"]["type"] = "item"
+
 
 var addItem = function () {
     var newItemName = document.getElementById("newItemName").value;
@@ -234,13 +277,16 @@ var addItem = function () {
 var displayAllItems = function () {
 
     document.getElementById("itemList").innerHTML = "";
-    for (var propName in localStorage) {
-        document.getElementById("itemList").innerHTML +=
-            " <li> <strong>name</strong>: " +
-            JSON.parse(localStorage[propName])["name"] +
-            " <strong>price</strong>: " +
-            JSON.parse(localStorage[propName])["price"] +
-            "  <button class='btn btn-default btn-sm' onclick='displayCart(" + localStorage[propName] + ");'>add to cart</button>" + "</li>";
+    for (var dataObject in localStorage) {
+        dataObject = JSON.parse(localStorage[dataObject]);
+        if (dataObject["type"] === "item") {
+            document.getElementById("itemList").innerHTML +=
+                " <li> <strong>name</strong>: " +
+                dataObject["name"] +
+                " <strong>price</strong>: " +
+                dataObject["price"] +
+                "  <button class='btn btn-default btn-sm' onclick='displayCart(" + dataObject + ");'>add to cart</button>" + "</li>";
+        }
     }
 };
 
@@ -283,9 +329,9 @@ var displayCart = function (newCartItem) {
 //===================================================onLoad expressions==========================================================//
 
 
-
+$("#homePage").addClass(" hide");
 localStorage.clear();
-postItems();
+//postItems();
 //localStorage.setItem("item1", JSON.stringify(new ItemConstructor("laptop", 1000)));
 //localStorage.setItem("item2", JSON.stringify(new ItemConstructor("car", 12000)));
 //localStorage.setItem("item3", JSON.stringify(new ItemConstructor("toaster", 30)));
