@@ -195,18 +195,6 @@ var scheduleNextUpdate = function () {
 scheduleNextUpdate();
 //====================================================Users====================================================================//
 
-/*
-Users
-1. I'll need to set the homepage html to display: none in order to only reveal the user info
-2. Create html for user log in and sign up
-    Functionality it will require
-        -userconstructor function
-        -logUserIn function
-3. Add newly created users to firebase
-    a. This means I'll have to refactor my functions to sort through firebase's data. I can do this by adding a "type" property to all my data objects.
-    b. Ideally I'll refactor the ajax calls to take the parameters they need instead of writing more ajax calls.
-4. Store current user on session storage. This means I'll have to filter through any data I'm grabbing from session storage.
-*/
 
 var logUserIn = function () {
     var userNameAttempt = document.getElementById("userNameLogInInput").value;
@@ -215,14 +203,21 @@ var logUserIn = function () {
         propName = JSON.parse(localStorage[propName])
         if (propName["type"] === "user") {
             if (propName["name"] === userNameAttempt && propName["password"] === passWordAttempt) {
-                currentUser = propName;
+                currentUser = propName["name"];
                 sessionStorage[sessionStorage.length] = propName;
             }
         }
     }
+    document.getElementById("displayUserName").innerHTML = currentUser;
     $("#homePage").removeClass("hide");
     $("#logInPage").addClass("hide");
 };
+
+var logOut = function () {
+    $("#homePage").addClass("hide");
+    $("#logInPage").removeClass("hide");
+    currentUser = "";
+}
 
 var signUserUp = function () {
     var newUserName = document.getElementById("userNameSignUpInput").value;
@@ -285,18 +280,11 @@ var displayAllItems = function () {
                 dataObject["name"] +
                 " <strong>price</strong>: " +
                 dataObject["price"] +
-                "  <button class='btn btn-default btn-sm' onclick='displayCart(" + dataObject + ");'>add to cart</button>" + "</li>";
+                "  <button class='btn btn-default btn-sm' onclick='displayCart(" + JSON.stringify(dataObject) + ");'>add to cart</button>" + "</li>";
         }
     }
 };
 
-//var displayAllItems = function () {
-
-//    document.getElementById("itemList").innerHTML = "";
-//    for (var i = 0; i < localStorage.length; i++) {
-//        document.getElementById("itemList").innerHTML += "<li> <strong>name</strong>: " + JSON.parse(localStorage[i])["name"] + " \n <strong>price</strong>: " + JSON.parse(localStorage[i])["price"] + "   <button class='btn btn-default btn-sm' onclick='displayCart(" + localStorage[i] + ");'>add to cart</button> </li>";
-//    }
-//};
 
 //==========================================================Cart Functions=======================================================//
 
@@ -328,18 +316,9 @@ var displayCart = function (newCartItem) {
 
 //===================================================onLoad expressions==========================================================//
 
-
 $("#homePage").addClass(" hide");
-localStorage.clear();
-//postItems();
-//localStorage.setItem("item1", JSON.stringify(new ItemConstructor("laptop", 1000)));
-//localStorage.setItem("item2", JSON.stringify(new ItemConstructor("car", 12000)));
-//localStorage.setItem("item3", JSON.stringify(new ItemConstructor("toaster", 30)));
 displayAllItems();
 
-
-
-// 
 
 
 
