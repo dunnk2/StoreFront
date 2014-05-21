@@ -20,8 +20,22 @@
     margin-top: 10px;
     /*background-color: #7FFF99;*/
     border-radius: 10px;
+    
+}
+
+#logInForm {
+    background-color: #68E8A6;
 }
 
 #signUpForm {
-    background-color: #68E8A6;
+    
+}
+
+.toggleCartStore{
+    width: 
+}
+
+.itemImages {
+    width: 100px;
+    height: 100px;
 }

@@ -13,12 +13,12 @@
                 <form role="form">
                     <h1>Log In</h1>
                     <div class="form-group">
-                        <label for="userNameLogIn">User Name</label>
-                        <input type="text" class="form-control" id="userNameLogInInput">
+                        <!--<label for="userNameLogIn">User Name</label>-->
+                        <input type="text" class="form-control" id="userNameLogInInput" placeholder="username">
                     </div>
                     <div class="form-group">
-                        <label for="userPasswordLogIn">Password</label>
-                        <input type="text" class="form-control" id="userPasswordLogInInput">
+                        <!--<label for="userPasswordLogIn">Password</label>-->
+                        <input type="password" class="form-control" id="userPasswordLogInInput" placeholder="password">
                     </div>
                     <div class="checkbox">
                     </div> <button type="submit" class="btn btn-default" id="logInButton" onclick="logUserIn();">Log in</button>
@@ -29,12 +29,16 @@
                     <form role="form">
                         <h1>Sign Up</h1>
                         <div class="form-group">
-                            <label for="userNameSignUp">User Name</label>
-                            <input type="text" class="form-control" id="userNameSignUpInput">
+                            <!--<label for="userNameSignUp">User Name</label>-->
+                            <input type="text" class="form-control" id="signUpUserNameInput" placeholder="desired user name">
                         </div>
                         <div class="form-group">
-                            <label for="userPasswordSignUpInput">Password</label>
-                            <input type="text" class="form-control" id="userPasswordSignUpInput">
+                            <!--<label for="userPasswordSignUpInput">Password</label>-->
+                            <input type="password" class="form-control" id="SignUpPasswordInput" placeholder="desired password">
+                        </div>
+                        <div class="form-group">
+                            <!--<label for="userPasswordSignUpInput">Password</label>-->
+                            <input type="password" class="form-control" id="SignUpPasswordInputRepeat" placeholder="re-enter password">
                         </div>
                         <div class="checkbox">
                         </div> <button type="submit" class="btn btn-default" id="logInButton" onclick="signUserUp();">Sign Up!</button>
@@ -93,7 +97,7 @@
                         </form>
                         <ul class="nav navbar-nav navbar-right">
                             <li>
-                                <a href="#">Log Out</a>
+                                <a href="#">link</a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
@@ -164,19 +168,21 @@
                     </div> <button type="submit" class="btn btn-default" id="addItemButton">Submit</button>
                 </form>
             </div>
-            <div class="col-md-4 column outline">
+            <div class="col-md-8 column outline" id="store">
                 <h3>
                     Browse Items
                 </h3>
-                <ul id="itemList">
-                </ul>
+                <button class="btn-block" onclick="displayCart()">View cart</button>
+                <div id="itemList">
+                </div>
             </div>
-            <div class="col-md-4 column outline">
+            <div class="col-md-8 column outline hide" id="cart">
                 <h3>
                     Your cart
                 </h3>
-                <ul id="cartList">
-                </ul>
+                <button class="btn-block" onclick="displayCart()">Continue browsing</button>
+                <div id="cartList">
+                </div>
             </div>
         </div>
     </div>

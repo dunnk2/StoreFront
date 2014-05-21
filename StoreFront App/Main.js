@@ -199,31 +199,44 @@ scheduleNextUpdate();
 var logUserIn = function () {
     var userNameAttempt = document.getElementById("userNameLogInInput").value;
     var passWordAttempt = document.getElementById("userPasswordLogInInput").value;
+    var userFound = false;
     for (var propName in localStorage) {
         propName = JSON.parse(localStorage[propName])
         if (propName["type"] === "user") {
             if (propName["name"] === userNameAttempt && propName["password"] === passWordAttempt) {
                 currentUser = propName["name"];
                 sessionStorage[sessionStorage.length] = propName;
+                document.getElementById("displayUserName").innerHTML = currentUser;
+                $("#homePage").removeClass("hide");
+                $("#logInPage").addClass("hide");
+                userFound = true;
             }
         }
     }
-    document.getElementById("displayUserName").innerHTML = currentUser;
-    $("#homePage").removeClass("hide");
-    $("#logInPage").addClass("hide");
+    if (userFound === false) {
+        alert("That user name or password could not be found");
+    }
+
 };
 
 var logOut = function () {
     $("#homePage").addClass("hide");
     $("#logInPage").removeClass("hide");
     currentUser = "";
+    $("#userNameLogInInput").val("");
+    $("#userPasswordLogInInput").val("");
 }
 
 var signUserUp = function () {
-    var newUserName = document.getElementById("userNameSignUpInput").value;
-    var newUserPassword = document.getElementById("userPasswordSignUpInput").value;
-    var newUserToSignUp = new UserConstructor(newUserName, newUserPassword);
-    sessionStorage[0] = JSON.stringify(newUserToSignUp);
+   
+    var newUserName = document.getElementById("signUpUserNameInput").value;
+    var newUserPassword = document.getElementById("SignUpPasswordInput").value;
+    var passwordRepeat = document.getElementById("SignUpPasswordInputRepeat").value;
+    if (newUserPassword === passwordRepeat) {
+        var newUserToSignUp = new UserConstructor(newUserName, newUserPassword);
+        sessionStorage[0] = JSON.stringify(newUserToSignUp);
+    }
+
     //postItems();
 };
 
@@ -244,7 +257,7 @@ $("#addItemButton").on("click", function (e) {
     addItem();
 });
 
-var ItemConstructor = function (name, price, description, image, rating) {
+var ItemConstructor = function (name, price, image) {
     this.name = name;
     this.price = price;
     this.image = image;
@@ -263,6 +276,7 @@ var addItem = function () {
     displayAllItems();
     newItemName.value = "";
     newItemPrice.value = "";
+    newItemImage.value = "";
     
     
     //newItemPic.value = "";
@@ -276,11 +290,12 @@ var displayAllItems = function () {
         dataObject = JSON.parse(localStorage[dataObject]);
         if (dataObject["type"] === "item") {
             document.getElementById("itemList").innerHTML +=
-                " <li> <strong>name</strong>: " +
+                " <div><img class='itemImages' src='" + dataObject["image"] + "' />" +
+                "<strong>name</strong>: " +
                 dataObject["name"] +
                 " <strong>price</strong>: " +
                 dataObject["price"] +
-                "  <button class='btn btn-default btn-sm' onclick='displayCart(" + JSON.stringify(dataObject) + ");'>add to cart</button>" + "</li>";
+                "  <button class='btn btn-default btn-sm' onclick='updateCart(" + JSON.stringify(dataObject) + ");'>add to cart</button>" + "</div>";
         }
     }
 };
@@ -294,23 +309,27 @@ var removeFromCart = function(itemToRemove) {
             cartItems.splice(i, 1);
         }
     }
-    displayCart();
+    updateCart();
 }
 
-var displayCart = function (newCartItem) {
-    //for (var prop in localStorage) {
-    //        cartItems.push(JSON.parse(localStorage[prop]));
-    //}
+var updateCart = function (newCartItem) {
     if (newCartItem !== undefined) {
         cartItems.push(newCartItem);
     }
     document.getElementById("cartList").innerHTML = "";
     for (var i = 0; i < cartItems.length; i++) {
-        document.getElementById("cartList").innerHTML += "<li> <strong>name</strong>: " + cartItems[i]["name"] + " \n <strong>price</strong>: " + cartItems[i]["price"] + "    <button class='btn btn-default btn-sm' onclick='removeFromCart(" + JSON.stringify(cartItems[i]) + ");'>Remove from cart</button></li>";
+        document.getElementById("cartList").innerHTML +=
+            "<div><img class='itemImages' src=" + cartItems[i]["image"] + " />" +
+            "<strong>name</strong>: " + cartItems[i]["name"] +
+            "\n <strong>price</strong>: " + cartItems[i]["price"] +
+            "     <button class='btn btn-default btn-sm'" +
+            "onclick='removeFromCart(" + JSON.stringify(cartItems[i]) + ");'>Remove from cart</button></div>";
     }
-    
+}
 
-    //postItems();
+var displayCart = function (newCartItem) {
+    $("#cart").toggleClass("hide");
+    $("#store").toggleClass("hide");
 };
 
 
